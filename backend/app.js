@@ -1,5 +1,5 @@
 import "dotenv/config";
-import express from "express";
+import express, { response } from "express";
 import compression from "compression";
 import formidable from "formidable";
 import AdmZip from "adm-zip";
@@ -11,6 +11,10 @@ import excelToJson from "convert-excel-to-json";
 
 const app = express();
 app.use(compression());
+
+app.get("/api", (req, res) => {
+  res.send("Hello World from API!");
+});
 
 app.post("/generate-documents", (req, res) => {
   return new Promise((resolve, reject) => {
