@@ -8,11 +8,9 @@ import Docxtemplater from "docxtemplater";
 import { DigitalOceanSpacesClient } from "./lib/digitalOceanSpaces/client.js";
 import fs from "fs";
 import excelToJson from "convert-excel-to-json";
-import { cors } from "cors";
 
 const app = express();
 app.use(compression());
-app.use(cors());
 
 app.post("/generate-documents", (req, res) => {
   return new Promise((resolve, reject) => {
