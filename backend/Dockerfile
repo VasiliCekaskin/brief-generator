@@ -1,0 +1,9 @@
+FROM node:17.9.0-slim
+
+WORKDIR /code
+COPY . /code
+
+RUN npm ci
+
+ENTRYPOINT ["./docker-entrypoint.sh"]
+CMD ["start"]
