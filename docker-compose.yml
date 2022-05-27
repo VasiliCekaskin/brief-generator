@@ -13,8 +13,10 @@ services:
   frontend:
     build: ./frontend
     image: "frontend:latest"
+    restart: always
   frontend_api:
     build: ./backend
     image: "frontend_api:latest"
     volumes:
       - ./generated-documents:/generated-documents
+    restart: always

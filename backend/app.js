@@ -17,7 +17,12 @@ app.get("/healthz", (req, res) => {
 });
 
 app.get("/api/documents/download/file-name", (req, res) => {
-  res.sendFile("/generated-documents/file-name.zip");
+  res.sendFile("/generated-documents/file-name.zip", {
+    headers: {
+      "Content-Type": "application/zip",
+      "Content-disposition": "attachment; filename=file-name.zip",
+    },
+  });
 });
 
 app.post("/api/generate-documents", (req, res) => {

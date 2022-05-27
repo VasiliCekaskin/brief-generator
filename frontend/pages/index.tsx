@@ -8,9 +8,10 @@ import Link from "@mui/material/Link";
 
 const Home: NextPage = () => {
   const [error, setError] = useState<string | null>(null);
-  const [downloadLink, setDownloadLink] = useState();
+  const [downloadLink, setDownloadLink] = useState(null);
 
   const createDocuments = async (files: FileList | null) => {
+    setDownloadLink(null);
     setError(null);
 
     if (files) {
