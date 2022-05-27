@@ -5,9 +5,9 @@ import formidable from "formidable";
 import AdmZip from "adm-zip";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
-import { DigitalOceanSpacesClient } from "./lib/digitalOceanSpaces/client.js";
 import fs from "fs";
 import excelToJson from "convert-excel-to-json";
+import lodash from "lodash";
 
 const app = express();
 app.use(compression());
@@ -16,7 +16,7 @@ app.get("/api", (req, res) => {
   res.send("Hello World from API!");
 });
 
-app.post("/generate-documents", (req, res) => {
+app.post("/api/generate-documents", (req, res) => {
   return new Promise((resolve, reject) => {
     const form = new formidable.IncomingForm();
     const admZip = new AdmZip();
@@ -42,34 +42,28 @@ app.post("/generate-documents", (req, res) => {
         },
       })["Sheet1"];
 
+      const pizZip = new PizZip(rawDocxFile);
+      const doc = new Docxtemplater(pizZip, {
+        paragraphLoop: true,
+        linebreaks: true,
+      });
+
       mapping.forEach((valuesJson, index) => {
-        const pizZip = new PizZip(rawDocxFile);
+        const buffer = lodash.clone(doc);
 
-        const doc = new Docxtemplater(pizZip, {
-          paragraphLoop: true,
-          linebreaks: true,
-        });
+        buffer.render(valuesJson);
 
-        doc.render(valuesJson);
-
-        const renderedDocx = doc.getZip().generate({
+        const renderedDocx = buffer.getZip().generate({
           type: "nodebuffer",
           // compression: DEFLATE adds a compression step.
           // For a 50MB output document, expect 500ms additional CPU time
-          compression: "DEFLATE",
+          // compression: "DEFLATE",
         });
 
         admZip.addFile(`output_${index}.docx`, renderedDocx);
       });
 
-      const digitalOceanSpacesClient = new DigitalOceanSpacesClient();
-
-      const { downloadLink } = await digitalOceanSpacesClient.uploadFile(
-        admZip.toBuffer(),
-        "some-file.zip"
-      );
-
-      res.status(200).json({ downloadLink });
+      res.status(200).json({ a: "" });
     });
   });
 });
