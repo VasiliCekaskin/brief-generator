@@ -36,12 +36,11 @@ const Home: NextPage = () => {
       }
 
       const response = await axios.post(
-        "https://ezwebs-letter-generator.herokuapp.com/generate-documents",
+        "http://localhost.ezwebs.de/api/generate-documents",
         formData,
         {
           headers: {
-            "Access-Control-Allow-Origin":
-              "https://ezwebs-letter-maker-ui.herokuapp.com",
+            "Access-Control-Allow-Origin": "http://localhost.ezwebs.de/api",
             "Content-Type": "multipart/form-data",
           },
         }
