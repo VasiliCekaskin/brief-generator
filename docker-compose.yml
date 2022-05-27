@@ -16,3 +16,5 @@ services:
   frontend_api:
     build: ./backend
     image: "frontend_api:latest"
+    volumes:
+      - ./generated-documents:/generated-documents

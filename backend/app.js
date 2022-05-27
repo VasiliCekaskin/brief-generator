@@ -12,8 +12,12 @@ import lodash from "lodash";
 const app = express();
 app.use(compression());
 
-app.get("/api", (req, res) => {
-  res.send("Hello World from API!");
+app.get("/healthz", (req, res) => {
+  res.send(200, "OK");
+});
+
+app.get("/api/documents/download/file-name", (req, res) => {
+  res.sendFile("/generated-documents/file-name.zip");
 });
 
 app.post("/api/generate-documents", (req, res) => {
@@ -43,6 +47,7 @@ app.post("/api/generate-documents", (req, res) => {
       })["Sheet1"];
 
       const pizZip = new PizZip(rawDocxFile);
+
       const doc = new Docxtemplater(pizZip, {
         paragraphLoop: true,
         linebreaks: true,
@@ -57,13 +62,18 @@ app.post("/api/generate-documents", (req, res) => {
           type: "nodebuffer",
           // compression: DEFLATE adds a compression step.
           // For a 50MB output document, expect 500ms additional CPU time
-          // compression: "DEFLATE",
+          compression: "DEFLATE",
         });
 
         admZip.addFile(`output_${index}.docx`, renderedDocx);
       });
 
-      res.status(200).json({ a: "" });
+      fs.writeFileSync("/generated-documents/file-name.zip", admZip.toBuffer());
+
+      res.status(200).json({
+        downloadLink:
+          "http://localhost.ezwebs.de/api/documents/download/file-name",
+      });
     });
   });
 });
