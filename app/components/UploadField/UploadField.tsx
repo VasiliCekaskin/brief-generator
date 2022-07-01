@@ -28,15 +28,10 @@ function UploadField({ uploadHandler }: UploadFieldProps) {
         type="file"
         name="files"
       />
-      <Button
-        startIcon={<AiOutlineCloudUpload size={32} />}
-        className="rounded-full p-6 pr-48 pl-48 bg-orange-500 hover:bg-orange-400 text-base font-bold"
-        size="large"
-        variant="contained"
-        component="span"
-      >
-        Dateien auswählen
-      </Button>
+      <button className="rounded-full flex items-center gap-8 p-6 pr-48 pl-48 bg-orange-500 hover:bg-orange-400">
+        <AiOutlineCloudUpload size={48} color="white" />
+        <p className="text-white text-base font-bold">Dateien auswählen</p>
+      </button>
     </label>
   );
 }

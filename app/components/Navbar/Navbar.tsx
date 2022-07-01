@@ -8,7 +8,7 @@ export const Navbar = () => {
       <Link underline="none" className="text-black" href="/">
         <div className="flex flex-row space-x-2 items-center">
           <GiLetterBomb size={48} className="fill-orange-500" />
-          <p className="text-2xl font-bold">Briefgenerator</p>
+          <p className="text-2xl font-bold text-black">Briefgenerator</p>
         </div>
       </Link>
 
@@ -28,12 +28,12 @@ export const Navbar = () => {
         </Link>
 
         <Link
-          className="border-4 border-orange-500 text-orange-500 rounded-full p-2 text-sm hover:bg-black hover:text-white hover:border-black transition duration-200"
+          className="border-4 border-orange-500 rounded-full p-2 hover:bg-black hover:text-white hover:border-black transition duration-200"
           variant="body1"
           underline="none"
           href="/signup"
         >
-          Registrieren
+          <p className="text-orange-500 text-sm">Registrieren</p>
         </Link>
       </div>
     </div>
