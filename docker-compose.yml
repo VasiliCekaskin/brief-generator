@@ -6,17 +6,7 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    networks:
-      default:
-        aliases:
-          - www.injixo.local
-  frontend:
-    build: ./frontend
-    image: "frontend:latest"
-    restart: always
-  frontend_api:
-    build: ./backend
-    image: "frontend_api:latest"
-    volumes:
-      - ./generated-documents:/generated-documents
+  app:
+    build: ./app
+    image: "app:latest"
     restart: always

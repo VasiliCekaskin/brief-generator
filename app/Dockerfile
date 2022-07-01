@@ -1,7 +1,7 @@
 FROM node:17.9.0-slim
 
-WORKDIR /code
-COPY . /code
+WORKDIR /app
+COPY . /app
 
 RUN npm ci
 
