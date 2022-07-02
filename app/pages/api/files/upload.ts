@@ -1,5 +1,4 @@
 /* eslint-disable import/no-anonymous-default-export */
-import "dotenv/config";
 import formidable from "formidable";
 import AdmZip from "adm-zip";
 import PizZip from "pizzip";

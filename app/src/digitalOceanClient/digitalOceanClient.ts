@@ -1,5 +1,4 @@
 // If any bug occurs here reference to learn more about this code: https://docs.digitalocean.com/reference/api/spaces-api/
-import "dotenv/config";
 import {
   GetObjectCommand,
   PutObjectCommand,
@@ -7,8 +6,6 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-console.log(process.env.DIGITAL_OCEAN_BUCKET_NAME);
-cka;
 // Create an S3Client which communicates with the digital ocean spaces space
 // which is needed for this application
 export class DigitalOceanSpacesClient extends S3Client {
@@ -29,8 +26,8 @@ export class DigitalOceanSpacesClient extends S3Client {
     const FILE_EXPIRY = 900; // seconds 15 min
     const data = await this.send(
       new PutObjectCommand({
-        Bucket: process.env.DIGITAL_OCEAN_BUCKET_NAME,
-        Key: `${process.env.DIGITAL_OCEAN_DOWNLOADS_PATH}${fileName}`,
+        Bucket: process.env.DIGITAL_OCEAN_SPACES_BUCKET_NAME,
+        Key: `${process.env.DIGITAL_OCEAN_SPACES_DOWNLOADS_PATH}${fileName}`,
         Body: file,
         ACL: "private",
       })
@@ -39,8 +36,8 @@ export class DigitalOceanSpacesClient extends S3Client {
     const downloadLink = await getSignedUrl(
       this,
       new GetObjectCommand({
-        Bucket: process.env.DIGITAL_OCEAN_BUCKET_NAME,
-        Key: `${process.env.DIGITAL_OCEAN_DOWNLOADS_PATH}${fileName}`,
+        Bucket: process.env.DIGITAL_OCEAN_SPACES_BUCKET_NAME,
+        Key: `${process.env.DIGITAL_OCEAN_SPACES_DOWNLOADS_PATH}${fileName}`,
       }),
       { expiresIn: FILE_EXPIRY }
     );
