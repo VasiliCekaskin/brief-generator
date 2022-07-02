@@ -44,39 +44,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       linebreaks: true,
     });
 
-    await Promise.all(
-      mapping.map(async (valuesJson, index) => {
-        console.log(`Creating files ${index}`);
-        const buffer = lodash.clone(doc);
+    mapping.forEach((valuesJson, index) => {
+      console.log(`Creating files ${index}`);
+      const buffer = lodash.clone(doc);
 
-        buffer.render(valuesJson);
+      buffer.render(valuesJson);
 
-        const renderedDocx = buffer.getZip().generate({
-          type: "nodebuffer",
-          // compression: DEFLATE adds a compression step.
-          // For a 50MB output document, expect 500ms additional CPU time
-          compression: "DEFLATE",
-        });
+      const renderedDocx = buffer.getZip().generate({
+        type: "nodebuffer",
+        // compression: DEFLATE adds a compression step.
+        // For a 50MB output document, expect 500ms additional CPU time
+        compression: "DEFLATE",
+      });
 
-        admZip.addFile(`output_${index}.docx`, renderedDocx);
-      })
-    );
-
-    // mapping.forEach((valuesJson, index) => {
-    //   console.log(`Creating files ${index}`);
-    //   const buffer = lodash.clone(doc);
-
-    //   buffer.render(valuesJson);
-
-    //   const renderedDocx = buffer.getZip().generate({
-    //     type: "nodebuffer",
-    //     // compression: DEFLATE adds a compression step.
-    //     // For a 50MB output document, expect 500ms additional CPU time
-    //     compression: "DEFLATE",
-    //   });
-
-    //   admZip.addFile(`output_${index}.docx`, renderedDocx);
-    // });
+      admZip.addFile(`output_${index}.docx`, renderedDocx);
+    });
 
     console.log("Uploading file");
 
