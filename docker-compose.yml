@@ -10,3 +10,8 @@ services:
     build: ./app
     image: "app:latest"
     restart: always
+    deploy:
+      replicas: 10
+      resources:
+        limits:
+          cpus: "0.1"
