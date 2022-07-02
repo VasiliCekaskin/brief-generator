@@ -14,4 +14,4 @@ services:
       replicas: 10
       resources:
         limits:
-          cpus: "0.1"
+          cpus: "0.10"
