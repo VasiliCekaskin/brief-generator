@@ -22,13 +22,19 @@ export class DigitalOceanSpacesClient extends S3Client {
     });
   }
 
-  async uploadFile({ file, fileName }) {
+  async uploadFile({
+    fileBuffer,
+    fileName,
+  }: {
+    fileBuffer: Buffer;
+    fileName: String;
+  }) {
     const FILE_EXPIRY = 900; // seconds 15 min
     const data = await this.send(
       new PutObjectCommand({
         Bucket: process.env.DIGITAL_OCEAN_SPACES_BUCKET_NAME,
         Key: `${process.env.DIGITAL_OCEAN_SPACES_DOWNLOADS_PATH}${fileName}`,
-        Body: file,
+        Body: fileBuffer,
         ACL: "private",
       })
     );

@@ -10,6 +10,7 @@ function UploadField({ uploadHandler }: UploadFieldProps) {
   const inputRef = useRef(null);
 
   const handleClick = () => {
+    // @ts-ignore
     inputRef?.current?.click();
   };
 

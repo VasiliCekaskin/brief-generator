@@ -22,7 +22,9 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     const excelFile = files.excelFile;
     const docxFile = files.docxFile;
 
+    // @ts-ignore
     const rawExcelFile = fs.readFileSync(excelFile.filepath.toString());
+    // @ts-ignore
     const rawDocxFile = fs.readFileSync(docxFile.filepath.toString());
 
     const mapping = excelToJson({
@@ -61,7 +63,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
 
     digitalOceanSpacesClient
       .uploadFile({
-        file: admZip.toBuffer(),
+        fileBuffer: admZip.toBuffer(),
         fileName: "test-file.zip",
       })
       .then(({ downloadLink }) => {
