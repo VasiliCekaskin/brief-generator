@@ -10,42 +10,43 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { DigitalOceanSpacesClient } from "../../../src/digitalOceanClient/digitalOceanClient";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  return new Promise((reject, resolve) => {
-    const form = new formidable.IncomingForm();
-    const admZip = new AdmZip();
+  const form = new formidable.IncomingForm();
+  const admZip = new AdmZip();
 
-    form.parse(req, async (err, _, files) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
+  form.parse(req, async (err, _, files) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
 
-      const excelFile = files.excelFile;
-      const docxFile = files.docxFile;
+    const excelFile = files.excelFile;
+    const docxFile = files.docxFile;
 
-      // @ts-ignore
-      const rawExcelFile = fs.readFileSync(excelFile.filepath.toString());
-      // @ts-ignore
-      const rawDocxFile = fs.readFileSync(docxFile.filepath.toString());
+    // @ts-ignore
+    const rawExcelFile = fs.readFileSync(excelFile.filepath.toString());
+    // @ts-ignore
+    const rawDocxFile = fs.readFileSync(docxFile.filepath.toString());
 
-      const mapping = excelToJson({
-        source: rawExcelFile,
-        header: {
-          rows: 1,
-        },
-        columnToKey: {
-          "*": "{{columnHeader}}",
-        },
-      })["Sheet1"];
+    const mapping = excelToJson({
+      source: rawExcelFile,
+      header: {
+        rows: 1,
+      },
+      columnToKey: {
+        "*": "{{columnHeader}}",
+      },
+    })["Sheet1"];
 
-      const pizZip = new PizZip(rawDocxFile);
+    const pizZip = new PizZip(rawDocxFile);
 
-      const doc = new Docxtemplater(pizZip, {
-        paragraphLoop: true,
-        linebreaks: true,
-      });
+    const doc = new Docxtemplater(pizZip, {
+      paragraphLoop: true,
+      linebreaks: true,
+    });
 
-      mapping.forEach((valuesJson, index) => {
+    await Promise.all(
+      mapping.map(async (valuesJson, index) => {
+        console.log(`Creating files ${index}`);
         const buffer = lodash.clone(doc);
 
         buffer.render(valuesJson);
@@ -58,21 +59,41 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         });
 
         admZip.addFile(`output_${index}.docx`, renderedDocx);
-      });
+      })
+    );
 
-      const digitalOceanSpacesClient = new DigitalOceanSpacesClient();
+    // mapping.forEach((valuesJson, index) => {
+    //   console.log(`Creating files ${index}`);
+    //   const buffer = lodash.clone(doc);
 
-      digitalOceanSpacesClient
-        .uploadFile({
-          fileBuffer: admZip.toBuffer(),
-          fileName: "test-file.zip",
-        })
-        .then(({ downloadLink }) => {
-          res.status(201).json({
-            downloadLink,
-          });
+    //   buffer.render(valuesJson);
+
+    //   const renderedDocx = buffer.getZip().generate({
+    //     type: "nodebuffer",
+    //     // compression: DEFLATE adds a compression step.
+    //     // For a 50MB output document, expect 500ms additional CPU time
+    //     compression: "DEFLATE",
+    //   });
+
+    //   admZip.addFile(`output_${index}.docx`, renderedDocx);
+    // });
+
+    console.log("Uploading file");
+
+    const digitalOceanSpacesClient = new DigitalOceanSpacesClient();
+
+    digitalOceanSpacesClient
+      .uploadFile({
+        fileBuffer: admZip.toBuffer(),
+        fileName: "test-file.zip",
+      })
+      .then(({ downloadLink }) => {
+        console.log("Done");
+
+        res.status(201).json({
+          downloadLink,
         });
-    });
+      });
   });
 };
 
