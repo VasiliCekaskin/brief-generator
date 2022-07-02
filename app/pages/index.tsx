@@ -36,7 +36,7 @@ const Home: NextPage = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:3000/files/upload",
+        "http://localhost:3000/api/files/upload",
         formData,
         {
           headers: {
