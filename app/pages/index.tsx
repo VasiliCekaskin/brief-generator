@@ -35,11 +35,15 @@ const Home: NextPage = () => {
         formData.append("docxFile", docxFile, docxFile.name);
       }
 
-      const response = await axios.post("http://localhost:", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:3000/files/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       setDownloadLink(response.data.downloadLink);
     }

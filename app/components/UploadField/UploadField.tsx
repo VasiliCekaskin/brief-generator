@@ -1,14 +1,18 @@
 /* eslint-disable react/jsx-key */
-import { useState } from "react";
-import Button from "@mui/material/Button";
 import { AiOutlineCloudUpload } from "react-icons/ai";
-import axios from "axios";
+import { useRef } from "react";
 
 type UploadFieldProps = {
   uploadHandler: (files: FileList | null) => void;
 };
 
 function UploadField({ uploadHandler }: UploadFieldProps) {
+  const inputRef = useRef(null);
+
+  const handleClick = () => {
+    inputRef?.current?.click();
+  };
+
   const handleChange = async ({
     target: { files },
   }: {
@@ -18,8 +22,18 @@ function UploadField({ uploadHandler }: UploadFieldProps) {
   };
 
   return (
-    <label htmlFor="contained-button-file">
+    <>
+      <label htmlFor="contained-button-file"></label>
+      <button
+        onClick={handleClick}
+        className="rounded-full flex items-center gap-8 p-6 pr-48 pl-48 bg-orange-500 hover:bg-orange-400"
+      >
+        <AiOutlineCloudUpload size={48} color="white" />
+        <p className="text-white text-base font-bold">Dateien auswählen</p>
+      </button>
       <input
+        style={{ display: "none" }}
+        ref={inputRef}
         onChange={handleChange}
         className="hidden"
         accept=".xls,.xlsx,.docx"
@@ -28,11 +42,7 @@ function UploadField({ uploadHandler }: UploadFieldProps) {
         type="file"
         name="files"
       />
-      <button className="rounded-full flex items-center gap-8 p-6 pr-48 pl-48 bg-orange-500 hover:bg-orange-400">
-        <AiOutlineCloudUpload size={48} color="white" />
-        <p className="text-white text-base font-bold">Dateien auswählen</p>
-      </button>
-    </label>
+    </>
   );
 }
 
