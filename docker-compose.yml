@@ -11,6 +11,7 @@ services:
     image: "app:latest"
     restart: always
     deploy:
+      mode: replicated
       replicas: 10
       resources:
         limits:
