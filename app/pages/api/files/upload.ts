@@ -74,14 +74,14 @@ const uploadFilesZip = async (filesZip: AdmZip) => {
   return downloadLink;
 };
 
-const processFileGeneration = (excelFile: File, docxFile: File) => {
+const processFileGeneration = async (excelFile: File, docxFile: File) => {
   const valuesMapping = extractMappingValues(excelFile);
   // @ts-ignore
   const docxTemplate = buildDocxTemplate(docxFile);
 
   const generatedFilesZip = generateFilesZip(valuesMapping, docxTemplate);
 
-  const downloadLink = uploadFilesZip(generatedFilesZip);
+  const downloadLink = await uploadFilesZip(generatedFilesZip);
 
   return downloadLink;
 };
@@ -99,7 +99,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const docxFile = files.docxFile;
 
     // @ts-ignore
-    const downloadLink = processFileGeneration(excelFile, docxFile);
+    const downloadLink = await processFileGeneration(excelFile, docxFile);
 
     res.status(201).json({
       downloadLink,
