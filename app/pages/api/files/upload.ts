@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import formidable from "formidable";
+import { IncomingForm, File } from "formidable";
 import AdmZip from "adm-zip";
 import PizZip from "pizzip";
 import Docxtemplater from "docxtemplater";
@@ -9,9 +9,73 @@ import lodash from "lodash";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { DigitalOceanSpacesClient } from "../../../src/digitalOceanClient/digitalOceanClient";
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const form = new formidable.IncomingForm();
+const extractMappingValues = (excelFile: File) => {
+  const rawExcelFileData = fs.readFileSync(excelFile.filepath.toString());
+
+  return excelToJson({
+    source: rawExcelFileData,
+    header: {
+      rows: 1,
+    },
+    columnToKey: {
+      "*": "{{columnHeader}}",
+    },
+  })["Sheet1"];
+};
+
+const buildDocxTemplate = (docxFile: File) => {
+  const rawDocxFileData = fs.readFileSync(docxFile.filepath.toString());
+
+  const pizZip = new PizZip(rawDocxFileData);
+
+  return new Docxtemplater(pizZip, {
+    paragraphLoop: true,
+    linebreaks: true,
+  });
+};
+
+const generateFilesZip = (
+  valuesMapping: any[],
+  docxTemplate: Docxtemplater
+) => {
   const admZip = new AdmZip();
+
+  valuesMapping.forEach((valuesJson, index) => {
+    console.log(`Creating files ${index}`);
+    const buffer = lodash.clone(docxTemplate);
+
+    buffer.render(valuesJson);
+
+    const renderedDocx = buffer.getZip().generate({
+      type: "nodebuffer",
+      // compression: DEFLATE adds a compression step.
+      // For a 50MB output document, expect 500ms additional CPU time
+      compression: "DEFLATE",
+    });
+
+    admZip.addFile(`output_${index}.docx`, renderedDocx);
+  });
+
+  return admZip;
+};
+
+const uploadFilesZip = async (filesZip: AdmZip) => {
+  console.log("Uploading file");
+
+  const digitalOceanSpacesClient = new DigitalOceanSpacesClient();
+
+  const { downloadLink } = await digitalOceanSpacesClient.uploadFile({
+    fileBuffer: filesZip.toBuffer(),
+    fileName: "test-file.zip",
+  });
+
+  console.log("Done Uploading file");
+
+  return downloadLink;
+};
+
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  const form = new IncomingForm();
 
   form.parse(req, async (err, _, files) => {
     if (err) {
@@ -19,63 +83,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    const excelFile = files.excelFile;
-    const docxFile = files.docxFile;
-
     // @ts-ignore
-    const rawExcelFile = fs.readFileSync(excelFile.filepath.toString());
+    const valuesMapping = extractMappingValues(file.excelFile);
     // @ts-ignore
-    const rawDocxFile = fs.readFileSync(docxFile.filepath.toString());
+    const docxTemplate = buildDocxTemplate(file.docxFile);
 
-    const mapping = excelToJson({
-      source: rawExcelFile,
-      header: {
-        rows: 1,
-      },
-      columnToKey: {
-        "*": "{{columnHeader}}",
-      },
-    })["Sheet1"];
+    const generatedFilesZip = generateFilesZip(valuesMapping, docxTemplate);
 
-    const pizZip = new PizZip(rawDocxFile);
+    const downloadLink = uploadFilesZip(generatedFilesZip);
 
-    const doc = new Docxtemplater(pizZip, {
-      paragraphLoop: true,
-      linebreaks: true,
+    res.status(201).json({
+      downloadLink,
     });
-
-    mapping.forEach((valuesJson, index) => {
-      console.log(`Creating files ${index}`);
-      const buffer = lodash.clone(doc);
-
-      buffer.render(valuesJson);
-
-      const renderedDocx = buffer.getZip().generate({
-        type: "nodebuffer",
-        // compression: DEFLATE adds a compression step.
-        // For a 50MB output document, expect 500ms additional CPU time
-        compression: "DEFLATE",
-      });
-
-      admZip.addFile(`output_${index}.docx`, renderedDocx);
-    });
-
-    console.log("Uploading file");
-
-    const digitalOceanSpacesClient = new DigitalOceanSpacesClient();
-
-    digitalOceanSpacesClient
-      .uploadFile({
-        fileBuffer: admZip.toBuffer(),
-        fileName: "test-file.zip",
-      })
-      .then(({ downloadLink }) => {
-        console.log("Done");
-
-        res.status(201).json({
-          downloadLink,
-        });
-      });
   });
 };
 
