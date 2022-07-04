@@ -74,6 +74,18 @@ const uploadFilesZip = async (filesZip: AdmZip) => {
   return downloadLink;
 };
 
+const processFileGeneration = (excelFile: File, docxFile: File) => {
+  const valuesMapping = extractMappingValues(excelFile);
+  // @ts-ignore
+  const docxTemplate = buildDocxTemplate(docxFile);
+
+  const generatedFilesZip = generateFilesZip(valuesMapping, docxTemplate);
+
+  const downloadLink = uploadFilesZip(generatedFilesZip);
+
+  return downloadLink;
+};
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const form = new IncomingForm();
 
@@ -83,14 +95,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    // @ts-ignore
-    const valuesMapping = extractMappingValues(file.excelFile);
-    // @ts-ignore
-    const docxTemplate = buildDocxTemplate(file.docxFile);
+    const excelFile = files.excelFile;
+    const docxFile = files.docxFile;
 
-    const generatedFilesZip = generateFilesZip(valuesMapping, docxTemplate);
-
-    const downloadLink = uploadFilesZip(generatedFilesZip);
+    // @ts-ignore
+    const downloadLink = processFileGeneration(excelFile, docxFile);
 
     res.status(201).json({
       downloadLink,
