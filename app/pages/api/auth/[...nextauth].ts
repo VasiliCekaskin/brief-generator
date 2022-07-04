@@ -1,5 +1,7 @@
+import { PrismaClient } from "@prisma/client";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import passwordHash from "password-hash";
 
 export default NextAuth({
   providers: [
@@ -11,7 +13,7 @@ export default NextAuth({
       // e.g. domain, username, password, 2FA token, etc.
       // You can pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
+        email: { label: "Email", type: "text", placeholder: "test@test.com" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
@@ -21,11 +23,24 @@ export default NextAuth({
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        if (
-          credentials?.password === "ezwebs" &&
-          credentials.username === "admin"
-        ) {
-          return { id: 1, name: "admin", isAdmin: true };
+
+        const prisma = new PrismaClient();
+
+        if (credentials?.email && credentials.password) {
+          const user = await prisma.user.findFirst({
+            where: { email: credentials.email },
+          });
+
+          if (!user) {
+            return null;
+          }
+
+          if (
+            user.passwordDigest &&
+            passwordHash.verify(credentials.password, user?.passwordDigest)
+          ) {
+            return { id: user.id, email: user?.email };
+          }
         }
 
         // Return null if user data could not be retrieved
