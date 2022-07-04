@@ -59,7 +59,7 @@ export const Navbar = () => {
               className="border-4 border-orange-500 rounded-full p-2 hover:bg-black hover:text-white hover:border-black transition duration-200"
               variant="body1"
               underline="none"
-              href="/signup"
+              href="/users/new"
             >
               <p className="text-orange-500 text-sm">Registrieren</p>
             </Link>
