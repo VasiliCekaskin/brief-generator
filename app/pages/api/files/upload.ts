@@ -9,7 +9,7 @@ import lodash from "lodash";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { DigitalOceanSpacesClient } from "../../../src/digitalOceanClient/digitalOceanClient";
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const form = new formidable.IncomingForm();
   const admZip = new AdmZip();
 
@@ -45,6 +45,7 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     });
 
     mapping.forEach((valuesJson, index) => {
+      console.log(`Creating files ${index}`);
       const buffer = lodash.clone(doc);
 
       buffer.render(valuesJson);
@@ -59,6 +60,8 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
       admZip.addFile(`output_${index}.docx`, renderedDocx);
     });
 
+    console.log("Uploading file");
+
     const digitalOceanSpacesClient = new DigitalOceanSpacesClient();
 
     digitalOceanSpacesClient
@@ -67,6 +70,8 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
         fileName: "test-file.zip",
       })
       .then(({ downloadLink }) => {
+        console.log("Done");
+
         res.status(201).json({
           downloadLink,
         });
