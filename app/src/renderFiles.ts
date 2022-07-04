@@ -8,6 +8,7 @@ import fs from "fs";
 import excelToJson from "convert-excel-to-json";
 import lodash from "lodash";
 import { DigitalOceanSpacesClient } from "./digitalOceanClient/digitalOceanClient";
+import crypto from "crypto";
 
 const extractMappingValues = (excelFile: File) => {
   const rawExcelFileData = fs.readFileSync(excelFile.filepath.toString());
@@ -53,7 +54,7 @@ const generateFilesZip = (
       compression: "DEFLATE",
     });
 
-    admZip.addFile(`output_${index}.docx`, renderedDocx);
+    admZip.addFile(`brief_${index}.docx`, renderedDocx);
   });
 
   return admZip;
@@ -66,7 +67,7 @@ const uploadFilesZip = async (filesZip: AdmZip) => {
 
   const { downloadLink } = await digitalOceanSpacesClient.uploadFile({
     fileBuffer: filesZip.toBuffer(),
-    fileName: "test-file.zip",
+    fileName: `briefe-${crypto.randomUUID()}.zip`,
   });
 
   console.log("Done Uploading file");
