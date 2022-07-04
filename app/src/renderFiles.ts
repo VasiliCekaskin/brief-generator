@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable import/no-anonymous-default-export */
 import { File } from "formidable";
 import AdmZip from "adm-zip";
