@@ -2,7 +2,8 @@
 
 if [ "$1" = "start" ]; then
   export NODE_ENV=production
-  npm run knex migrate:latest
+  npm run db:create
+  npm run db:migrate
   exec npm run start
 else
   exec "$@"

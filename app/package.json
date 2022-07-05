@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "db:create": "node ./src/db/createDB.js",
+    "db:migrate": "knex migrate:latest",
     "build": "next build",
     "export": "next export",
     "start": "next start",

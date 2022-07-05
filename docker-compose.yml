@@ -24,11 +24,11 @@ services:
       - DIGITAL_OCEAN_SPACES_DOWNLOADS_PATH=tmp/downloads/
       - DIGITAL_OCEAN_SPACES_ENDPOINT=https://fra1.digitaloceanspaces.com
       - DIGITAL_OCEAN_SPACES_REGION=fra1
-      - NEXTAUTH_URL=http://localhost:3000
-      - NEXTAUTH_SECRET=abcd
+      - NEXTAUTH_URL=http://localhost.letterfriend.ezwebs.de
+      - NEXTAUTH_SECRET=verysecretsecret
       - DATABASE_HOST=postgres
       - DATABASE_PORT=5432
-      - DATABASE_NAME=letter-friend
+      - DATABASE_NAME=letterfriend
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=postgres
     depends_on:
