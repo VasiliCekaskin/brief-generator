@@ -8,7 +8,7 @@ import { Form, Field } from "react-final-form";
 const New: NextPage = () => {
   const router = useRouter();
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: any) => {
     const response = await axios.post("/api/users/new", values);
 
     if (response.status === 403) {
