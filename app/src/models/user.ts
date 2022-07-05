@@ -1,7 +1,7 @@
 interface User {
   id: Number;
-  email: String;
-  passwordHash: String;
+  email: string;
+  passwordHash: string;
 }
 
 export default User;

@@ -2,18 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import User from "../../../src/models/user";
 import passwordHash from "password-hash";
-import knex from "knex";
-
-const db = knex({
-  client: "postgresql",
-  connection: {
-    host: "localhost",
-    port: 5432,
-    user: "postgres",
-    password: "postgres",
-    database: "letter-friend",
-  },
-});
+import dbClient from "../../../src/db/client";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, password, passwordRepeat } = req.body;
@@ -40,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const hashedPassword = passwordHash.generate(password);
 
-  await db<User>("users").insert({
+  await dbClient<User>("users").insert({
     email: email,
     passwordHash: hashedPassword,
   });

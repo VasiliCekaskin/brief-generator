@@ -10,7 +10,7 @@ export const Navbar = () => {
     <>
       {session && session.user ? (
         <div className="w-full bg-green-300 text-center">
-          <p>Logged in as {session.user.name}</p>
+          <p>Logged in as {session.user.email}</p>
         </div>
       ) : (
         <div className="w-full bg-red-300 text-center">
