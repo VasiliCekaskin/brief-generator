@@ -18,7 +18,19 @@ services:
     image: "app:latest"
     restart: always
     environment:
-      - DATABSE_URL=postgresql://postgres:postgres@localhost/letter-friend
+      - DIGITAL_OCEAN_SPACES_SECRET_ACCESS_KEY=s1fWT75Zn11HW+mTLBfsPfPRCMk9CTxguCjTlDr6sT0
+      - DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID=X6VQUFXODOYQYJ2XPJAZ
+      - DIGITAL_OCEAN_SPACES_BUCKET_NAME=letter-friend
+      - DIGITAL_OCEAN_SPACES_DOWNLOADS_PATH=tmp/downloads/
+      - DIGITAL_OCEAN_SPACES_ENDPOINT=https://fra1.digitaloceanspaces.com
+      - DIGITAL_OCEAN_SPACES_REGION=fra1
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=abcd
+      - DATABASE_HOST=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=letter-friend
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
     depends_on:
       - postgres
     networks:
