@@ -1,5 +1,7 @@
 // Update with your config settings.
 
+require("dotenv").config();
+
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
@@ -7,10 +9,10 @@ module.exports = {
   development: {
     client: "postgresql",
     connection: {
-      host: "localhost",
-      database: "letter-friend",
-      user: "postgres",
-      password: "postgres",
+      host: process.env.DATABASE_HOST,
+      database: process.env.DATABASE_NAME,
+      user: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
     },
     pool: {
       min: 2,
@@ -24,10 +26,10 @@ module.exports = {
   production: {
     client: "postgresql",
     connection: {
-      host: "postgres",
-      database: "letter-friend",
-      user: "postgres",
-      password: "postgres",
+      host: process.env.DATABASE_HOST,
+      database: process.env.DATABASE_NAME,
+      user: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
     },
     pool: {
       min: 2,

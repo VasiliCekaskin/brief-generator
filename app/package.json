@@ -23,6 +23,7 @@
     "axios": "^0.26.0",
     "convert-excel-to-json": "^1.7.0",
     "docxtemplater": "^3.31.0",
+    "dotenv": "^16.0.1",
     "final-form": "^4.20.7",
     "form-data": "^4.0.0",
     "formidable": "^2.0.1",
