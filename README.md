@@ -30,3 +30,9 @@ Migrate database
 DATABSE_URL=postgresql://postgres:postgres@localhost/letter-friend npx migrate dev --name [name]
 
 ```
+
+When docker says something does not work:
+
+```
+docker system prune
+```
