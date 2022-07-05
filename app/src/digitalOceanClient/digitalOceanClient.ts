@@ -1,4 +1,5 @@
 // If any bug occurs here reference to learn more about this code: https://docs.digitalocean.com/reference/api/spaces-api/
+import "dotenv";
 import {
   GetObjectCommand,
   PutObjectCommand,

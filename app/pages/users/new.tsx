@@ -14,6 +14,10 @@ const New: NextPage = () => {
     if (response.status === 403) {
       router.push("/403");
     }
+
+    if (response.status === 201) {
+      router.push("/api/auth/signin");
+    }
   };
 
   return (
