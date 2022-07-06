@@ -33,7 +33,6 @@ Migrate database
 
 ```
 npm run db:migrate
-
 ```
 
 When docker says something does not work:
