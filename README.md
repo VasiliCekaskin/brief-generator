@@ -24,11 +24,15 @@ or build and run
 ./build_and_run
 ```
 
+Create database
+```
+npm run db:create
+```
+
 Migrate database
 
 ```
-DATABSE_URL=postgresql://postgres:postgres@localhost/letter-friend npx migrate dev --name [name]
-
+npm run db:migrate
 ```
 
 When docker says something does not work:
