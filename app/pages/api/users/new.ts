@@ -6,6 +6,7 @@ import dbClient from "../../../src/db/client";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, password, passwordRepeat } = req.body;
+  const allowedEmails = ["demo@baris.com", "demo@admin.com"];
 
   if (!email || !password || !passwordRepeat) {
     return res.status(422).json({
@@ -22,6 +23,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       errors: [
         {
           name: "passwords_not_equal",
+        },
+      ],
+    });
+  }
+
+  if (!allowedEmails.includes(email)) {
+    return res.status(422).json({
+      errors: [
+        {
+          name: "email_not_allowed",
         },
       ],
     });

@@ -26,6 +26,12 @@ export default NextAuth({
         // (i.e., the request IP address)
 
         if (credentials && credentials.email && credentials.password) {
+          const allowedEmails = ["demo@baris.com", "demo@admin.com"];
+
+          if (!allowedEmails.includes(credentials.email)) {
+            return null;
+          }
+
           const user = await dbClient<User>("users")
             .where("email", credentials.email)
             .first();
