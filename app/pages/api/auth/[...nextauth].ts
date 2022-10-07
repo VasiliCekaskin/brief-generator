@@ -32,7 +32,6 @@ export default NextAuth({
 
           if (
             user &&
-            user.email_verified &&
             passwordHash.verify(credentials.password, user.passwordHash)
           ) {
             return { id: user.id, email: user.email };
