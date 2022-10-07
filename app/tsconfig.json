@@ -15,6 +15,12 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "migrations/20221007162043_add_email_verified_to_user.js",
+    "migrations/20221007162043_add_email_verified_to_user.tsm"
+  ],
   "exclude": ["node_modules"]
 }

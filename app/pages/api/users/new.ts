@@ -4,9 +4,18 @@ import User from "../../../src/models/user";
 import passwordHash from "password-hash";
 import dbClient from "../../../src/db/client";
 
+import Mailgun from "mailgun.js";
+import formData from "form-data";
+
+const mailgun = new Mailgun(formData);
+
+const mg = mailgun.client({
+  username: "info",
+  key: process.env.MAILGUN_API_KEY || "",
+});
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { email, password, passwordRepeat } = req.body;
-  const allowedEmails = ["demo@baris.com", "demo@admin.com"];
 
   if (!email || !password || !passwordRepeat) {
     return res.status(422).json({
@@ -28,17 +37,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
-  if (!allowedEmails.includes(email)) {
-    return res.status(422).json({
-      errors: [
-        {
-          name: "email_not_allowed",
-        },
-      ],
-    });
-  }
-
   const hashedPassword = passwordHash.generate(password);
+
+  mg.messages
+    .create("sandboxe0b99a1bf6cb441eb80efdc85fc824e2.mailgun.org", {
+      from: "letter-friend@ezwebs.de",
+      to: [email],
+      subject: "Hello",
+      text: "Testing some Mailgun awesomness!",
+      html: "<h1>Testing some Mailgun awesomness!</h1>",
+    })
+    .then((msg) => console.log(msg)) // logs response data
+    .catch((err) => console.error(err)); // logs any error
 
   await dbClient<User>("users").insert({
     email: email,
