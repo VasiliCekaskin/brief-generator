@@ -9,16 +9,15 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 // Create an S3Client which communicates with the digital ocean spaces space
 // which is needed for this application
-export class DigitalOceanSpacesClient extends S3Client {
+export class ConfiguredS3Client extends S3Client {
   constructor() {
     super({
-      endpoint: process.env.DIGITAL_OCEAN_SPACES_ENDPOINT,
-      region: process.env.DIGITAL_OCEAN_SPACES_REGION,
+      region: process.env.AWS_S3_REGION,
       credentials: {
         // @ts-ignore:next-line
-        accessKeyId: process.env.DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID,
+        accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
         // @ts-ignore:next-line
-        secretAccessKey: process.env.DIGITAL_OCEAN_SPACES_SECRET_ACCESS_KEY,
+        secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
       },
     });
   }
@@ -33,8 +32,8 @@ export class DigitalOceanSpacesClient extends S3Client {
     const FILE_EXPIRY = 900; // seconds 15 min
     const data = await this.send(
       new PutObjectCommand({
-        Bucket: process.env.DIGITAL_OCEAN_SPACES_BUCKET_NAME,
-        Key: `${process.env.DIGITAL_OCEAN_SPACES_DOWNLOADS_PATH}${fileName}`,
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: `${process.env.AWS_S3_DOWNLOADS_PATH}${fileName}`,
         Body: fileBuffer,
         ACL: "private",
       })
@@ -43,8 +42,8 @@ export class DigitalOceanSpacesClient extends S3Client {
     const downloadLink = await getSignedUrl(
       this,
       new GetObjectCommand({
-        Bucket: process.env.DIGITAL_OCEAN_SPACES_BUCKET_NAME,
-        Key: `${process.env.DIGITAL_OCEAN_SPACES_DOWNLOADS_PATH}${fileName}`,
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: `${process.env.AWS_S3_DOWNLOADS_PATH}${fileName}`,
       }),
       { expiresIn: FILE_EXPIRY }
     );
