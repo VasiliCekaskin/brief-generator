@@ -6,6 +6,10 @@ import dbClient from "../../../src/db/client";
 
 import Mailgun from "mailgun.js";
 import formData from "form-data";
+import EmailVerification from "../../../src/models/emailVerification";
+
+import crypto from "crypto";
+import { DateTime } from "luxon";
 
 const mailgun = new Mailgun(formData);
 
@@ -39,21 +43,41 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const hashedPassword = passwordHash.generate(password);
 
-  mg.messages
-    .create("sandboxe0b99a1bf6cb441eb80efdc85fc824e2.mailgun.org", {
-      from: "letter-friend@ezwebs.de",
-      to: [email],
-      subject: "Hello",
-      text: "Testing some Mailgun awesomness!",
-      html: "<h1>Testing some Mailgun awesomness!</h1>",
-    })
-    .then((msg) => console.log(msg)) // logs response data
-    .catch((err) => console.error(err)); // logs any error
-
   await dbClient<User>("users").insert({
     email: email,
     passwordHash: hashedPassword,
   });
+
+  const user = await dbClient<User>("users").where("email", email).first();
+
+  if (!user) {
+    return res.status(500);
+  }
+
+  const verificationHash = crypto
+    .createHash("sha256")
+    .update(crypto.randomUUID())
+    .digest("hex");
+
+  const emailVerification = await dbClient<EmailVerification>(
+    "email_verifications"
+  ).insert({
+    verification_hash: verificationHash,
+    user_id: user.id,
+    created_at: DateTime.now().toISO(),
+    expires_at: DateTime.now().toISO(),
+  });
+
+  mg.messages
+    .create("sandboxe0b99a1bf6cb441eb80efdc85fc824e2.mailgun.org", {
+      from: "letter-friend@ezwebs.de",
+      to: [email],
+      subject: "Letter Friend Anmeldung",
+      text: "Hallo, wilkommen bei deinem letter friend",
+      html: `<h1>Account anmeldung verifizieren: <a>localhost.letterfriend.ezwebs.de/api/users/verification/${verificationHash}</a></h1>`,
+    })
+    .then((msg) => console.log(msg)) // logs response data
+    .catch((err) => console.error(err)); // logs any error
 
   return res.status(201).json({
     data: {
