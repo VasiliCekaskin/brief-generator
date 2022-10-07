@@ -7,4 +7,4 @@ interface EmailVerification {
   verified_at: string;
 }
 
-export default User;
+export default EmailVerification;
