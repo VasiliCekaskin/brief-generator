@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import passwordHash from "password-hash";
 import dbClient from "../../../src/db/client";
+import EmailVerification from "../../../src/models/emailVerification";
 import User from "../../../src/models/user";
 
 export default NextAuth({
@@ -34,7 +35,19 @@ export default NextAuth({
             user &&
             passwordHash.verify(credentials.password, user.passwordHash)
           ) {
-            return { id: user.id, email: user.email };
+            const emailVerifications = await dbClient<EmailVerification>(
+              "email_verifications"
+            ).where("user_id", user.id);
+
+            const emailVerified = emailVerifications.find(
+              (emailVerification) => {
+                emailVerification.verified_at != null;
+              }
+            );
+
+            if (emailVerified) {
+              return { id: user.id, email: user.email };
+            }
           }
         }
 
