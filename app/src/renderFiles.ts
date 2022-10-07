@@ -7,7 +7,7 @@ import Docxtemplater from "docxtemplater";
 import fs from "fs";
 import excelToJson from "convert-excel-to-json";
 import lodash from "lodash";
-import { DigitalOceanSpacesClient } from "./digitalOceanClient/digitalOceanClient";
+import { ConfiguredS3Client } from "./configuredS3Client/configuredS3Client";
 import crypto from "crypto";
 
 const extractMappingValues = (excelFile: File) => {
@@ -63,9 +63,9 @@ const generateFilesZip = (
 const uploadFilesZip = async (filesZip: AdmZip) => {
   console.log("Uploading file");
 
-  const digitalOceanSpacesClient = new DigitalOceanSpacesClient();
+  const configuredS3Client = new ConfiguredS3Client();
 
-  const { downloadLink } = await digitalOceanSpacesClient.uploadFile({
+  const { downloadLink } = await configuredS3Client.uploadFile({
     fileBuffer: filesZip.toBuffer(),
     fileName: `briefe-${crypto.randomUUID()}.zip`,
   });
