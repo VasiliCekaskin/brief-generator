@@ -41,6 +41,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
+  const existingUser = await dbClient<User>("users")
+    .where("email", email)
+    .first();
+
+  if (existingUser) {
+    return res.status(422).json({
+      errors: [
+        {
+          name: "email_already_exists",
+        },
+      ],
+    });
+  }
+
   const hashedPassword = passwordHash.generate(password);
 
   await dbClient<User>("users").insert({
@@ -59,9 +73,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     .update(crypto.randomUUID())
     .digest("hex");
 
-  const emailVerification = await dbClient<EmailVerification>(
-    "email_verifications"
-  ).insert({
+  await dbClient<EmailVerification>("email_verifications").insert({
     verification_hash: verificationHash,
     user_id: user.id,
     created_at: DateTime.now().toISO(),
@@ -73,8 +85,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       from: "letter-friend@ezwebs.de",
       to: [email],
       subject: "Letter Friend Anmeldung",
-      text: "Hallo, wilkommen bei deinem letter friend",
-      html: `<h1>Account anmeldung verifizieren: <a>localhost.letterfriend.ezwebs.de/api/users/verification/${verificationHash}</a></h1>`,
+      text: "Hallo, willkommen bei deinem letter friend",
+      html: `<h1>Account anmeldung verifizieren: </h1><a>http://localhost.letterfriend.ezwebs.de/api/users/verification/${verificationHash}</a>`,
     })
     .then((msg) => console.log(msg)) // logs response data
     .catch((err) => console.error(err)); // logs any error

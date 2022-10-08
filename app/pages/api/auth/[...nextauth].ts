@@ -33,21 +33,10 @@ export default NextAuth({
 
           if (
             user &&
+            user.email_verified &&
             passwordHash.verify(credentials.password, user.passwordHash)
           ) {
-            const emailVerifications = await dbClient<EmailVerification>(
-              "email_verifications"
-            ).where("user_id", user.id);
-
-            const emailVerified = emailVerifications.find(
-              (emailVerification) => {
-                emailVerification.verified_at != null;
-              }
-            );
-
-            if (emailVerified) {
-              return { id: user.id, email: user.email };
-            }
+            return { id: user.id, email: user.email };
           }
         }
 
