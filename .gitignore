@@ -3,4 +3,4 @@
 .env.local
 **/*/.DS_Store
 **/*/.env
-docker-compose.development.yml
+docker-compose.bak.yml
