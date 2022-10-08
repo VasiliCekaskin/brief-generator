@@ -6,13 +6,6 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-  postgres:
-    image: "postgres:latest"
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
   app:
     build: ./app
     image: "app:latest"
@@ -25,7 +18,3 @@ services:
       - AWS_S3_REGION
       - NEXTAUTH_URL
       - NEXTAUTH_SECRET
-    depends_on:
-      - postgres
-    networks:
-      - default
