@@ -17,20 +17,14 @@ services:
     build: ./app
     image: "app:latest"
     restart: always
-    environment:
-      - DIGITAL_OCEAN_SPACES_SECRET_ACCESS_KEY=s1fWT75Zn11HW+mTLBfsPfPRCMk9CTxguCjTlDr6sT0
-      - DIGITAL_OCEAN_SPACES_ACCESS_KEY_ID=X6VQUFXODOYQYJ2XPJAZ
-      - DIGITAL_OCEAN_SPACES_BUCKET_NAME=letter-friend
-      - DIGITAL_OCEAN_SPACES_DOWNLOADS_PATH=tmp/downloads/
-      - DIGITAL_OCEAN_SPACES_ENDPOINT=https://fra1.digitaloceanspaces.com
-      - DIGITAL_OCEAN_SPACES_REGION=fra1
-      - NEXTAUTH_URL=http://localhost.letterfriend.ezwebs.de
-      - NEXTAUTH_SECRET=verysecretsecret
-      - DATABASE_HOST=postgres
-      - DATABASE_PORT=5432
-      - DATABASE_NAME=letterfriend
-      - DATABASE_USER=postgres
-      - DATABASE_PASSWORD=postgres
+    secrets:
+      - AWS_S3_SECRET_ACCESS_KEY
+      - AWS_S3_ACCESS_KEY_ID
+      - AWS_S3_BUCKET_NAME
+      - AWS_S3_DOWNLOADS_PATH
+      - AWS_S3_REGION
+      - NEXTAUTH_URL
+      - NEXTAUTH_SECRET
     depends_on:
       - postgres
     networks:
