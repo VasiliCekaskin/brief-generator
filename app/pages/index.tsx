@@ -3,15 +3,12 @@ import type { NextPage } from "next";
 import UploadField from "../components/UploadField/UploadField";
 import axios from "axios";
 import { extractFiles } from "../src/extractFiles";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "@mui/material/Link";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [downloadLink, setDownloadLink] = useState();
-  const { data: session } = useSession();
 
   const createDocuments = async (files: FileList | null) => {
     setError(null);
@@ -54,22 +51,11 @@ const Home: NextPage = () => {
         Ganz einfach und schnell hunderte Briefe generieren lassen.
       </p>
 
-      {session?.user ? (
-        <>
-          {error ? <p className="text-red-600">{error}</p> : null}
+      {error ? <p className="text-red-600">{error}</p> : null}
 
-          <UploadField uploadHandler={createDocuments} />
+      <UploadField uploadHandler={createDocuments} />
 
-          {downloadLink ? <Link href={downloadLink}>Download</Link> : null}
-        </>
-      ) : (
-        <>
-          <div>Du musst eingeloggt sein um dieses feature zu nutzen.</div>
-          <Link variant="body1" underline="none" href="/api/auth/signin">
-            <p className="text-orange-500 text-sm">Jetzt einloggen</p>
-          </Link>
-        </>
-      )}
+      {downloadLink ? <Link href={downloadLink}>Download</Link> : null}
 
       <p className="text-xl mb-12 font-bold">Wie funktionierts?</p>
       <div className="grid grid-cols-3 w-2/3 h-96">
