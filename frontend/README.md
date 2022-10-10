@@ -1,7 +1,7 @@
-# Play - Free Tailwind CSS Template for Startup, Apps and SaaS
+# Briefgenerator - Free Tailwind CSS Template for Startup, Apps and SaaS
 
-Play is an open-source and free Tailwind CSS template co-created by TailGrids and UIdeck. This template specially crafted for SaaS, startup, business and software website.
-Play crafted in a way that you can use with almost all sort of web project. This is Tailwind CSS version of our old [Bootstrap](https://preview.uideck.com/items/play-bootstrap/) project.
+Briefgenerator is an open-source and free Tailwind CSS template co-created by TailGrids and UIdeck. This template specially crafted for SaaS, startup, business and software website.
+Briefgenerator crafted in a way that you can use with almost all sort of web project. This is Tailwind CSS version of our old [Bootstrap](https://preview.uideck.com/items/play-bootstrap/) project.
 
 ### This template crafted using 🥞 [TailGrids](https://tailgrids.com/) UI components
 
@@ -13,7 +13,7 @@ Play crafted in a way that you can use with almost all sort of web project. This
 
 ## 📃 License
 
-Play is an open-source template, you can use it with your personal or commercial projects without any attribution or backlink.
+Briefgenerator is an open-source template, you can use it with your personal or commercial projects without any attribution or backlink.
 
 ## 💙 Support
 
