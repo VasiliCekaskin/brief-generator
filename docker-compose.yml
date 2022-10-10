@@ -6,9 +6,9 @@ services:
       - "80:80"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-  app:
-    build: ./app
-    image: "app:latest"
+  backend:
+    build: ./brief-generator-backend
+    image: "brief-generator-backend:latest"
     restart: always
     secrets:
       - AWS_S3_SECRET_ACCESS_KEY
@@ -18,3 +18,8 @@ services:
       - AWS_S3_REGION
       - NEXTAUTH_URL
       - NEXTAUTH_SECRET
+  brief-generator-ui:
+    build: ./frontend
+    image: "brief-generator-ui:latest"
+    ports:
+      - "80:80"
