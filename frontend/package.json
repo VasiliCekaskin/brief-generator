@@ -1,18 +1,13 @@
 {
-  "name": "play-tailwind",
-  "version": "1.0.0",
+  "name": "brief-generator-frontend",
   "description": "",
   "main": "tailwind.config.js",
   "scripts": {
-    "build-css": "tailwindcss -i ./src/tailwind.css -o ./assets/css/tailwind.css -w"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/uideck/play-tailwind.git"
+    "version": "1.0.0",
+    "build-css": "tailwindcss -i ./src/tailwind.css -o ./www/assets/css/tailwind.css -w"
   },
   "keywords": [],
-  "author": "",
-  "license": "MIT",
+  "author": "Vasili Cekaskin",
   "devDependencies": {
     "prettier": "^2.6.2",
     "prettier-plugin-tailwindcss": "^0.1.9",
