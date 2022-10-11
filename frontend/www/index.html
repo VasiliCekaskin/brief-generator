@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="assets/css/animate.css" />
     <link rel="stylesheet" href="assets/css/tailwind.css" />
 
+    <link rel="font" href="assets/fonts/Inter/static/Inter-Regular.ttf" />
+
     <!-- ==== WOW JS ==== -->
     <script src="assets/js/wow.min.js"></script>
     <script>
@@ -121,7 +123,7 @@
                     href="#briefgenerator"
                     class="block py-4 px-6 align-middle text-base font-medium text-white"
                   >
-                    <span>Jetzt Briefe erstellen lassen</span>
+                    <span class="mb-8">Jetzt Briefe erstellen lassen</span>
 
                     <img
                       class="mx-auto block align-middle"
@@ -132,30 +134,23 @@
                 </div>
               </ul>
               <div>
-                <form class="flex" action="/action_page.php">
+                <form
+                  class="flex justify-center align-middle"
+                  action="/action_page.php"
+                >
                   <div
-                    class="flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300"
+                    class="block w-1/2 cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300"
                   >
                     <label
-                      for="dropzone-file"
+                      for="dropzone-excelFile"
                       class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                     >
                       <div class="justify-center pt-5 pb-6">
-                        <svg
-                          aria-hidden="true"
-                          class="mx-auto mb-3 h-10 w-10 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                          ></path>
-                        </svg>
+                        <img
+                          class="mx-auto mb-6"
+                          src="assets/images/hero/excelIcon.png"
+                          alt="Excel Logo 32x32 Pixel"
+                        />
                         <p
                           class="mx-auto mb-2 text-sm text-white dark:text-gray-400"
                         >
@@ -177,42 +172,37 @@
                     class="flex w-full cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-gray-300"
                   >
                     <label
-                      for="dropzone-file"
+                      for="dropzone-docsFile"
                       class="dark:hover:bg-bray-800 flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                     >
                       <div class="justify-center pt-5 pb-6">
-                        <svg
-                          aria-hidden="true"
-                          class="mx-auto mb-3 h-10 w-10 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                          ></path>
-                        </svg>
+                        <img
+                          class="mx-auto mb-6"
+                          src="assets/images/hero/docsIcon.png"
+                          alt="Docs Logo 32x32 Pixel"
+                        />
                         <p
                           class="mx-auto mb-2 text-sm text-white dark:text-gray-400"
                         >
                           <span class="font-semibold"
-                            >Excel Datei hochladen</span
+                            >Word Datei hochladen</span
                           >
                         </p>
                       </div>
                       <input
-                        id="dropzone-excelFile"
+                        id="dropzone-docsFile"
                         type="file"
-                        accept=".xls,.xlsx"
-                        name="excelFile"
+                        accept=".doc,.docx"
+                        name="docsFile"
                         class="hidden"
                       />
                     </label>
                   </div>
+                  <input
+                    type="submit"
+                    value="Dateien generieren"
+                    class="mx-auto mr-2 mb-2 rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:hover:border-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-700"
+                  />
                 </form>
               </div>
             </div>
