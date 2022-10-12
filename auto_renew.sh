@@ -2,11 +2,10 @@
 
 while true
 do
-	echo "Autorenewing frontend ++ Start ..."
-	docker compose stop frontend
-	docker compose build frontend --no-cache
+	echo "Autorenewing build ++ Start ..."
+	docker compose build backend
 	docker compose up -d frontend
-	echo "Autorenewing frontend ++ Done ..."
+	echo "Autorenewing build ++ Done ..."
 	echo "Waiting 3 seconds"
-	sleep 5 
+	sleep 3 
 done
