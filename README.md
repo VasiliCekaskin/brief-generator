@@ -1,3 +1,7 @@
+just run: `./run`
+build & run: `./build_and_run`
+autorebuild front-end & run: `./auto_renew`
+
 Development
 
 ```
@@ -25,6 +29,7 @@ or build and run
 ```
 
 Create database
+
 ```
 npm run db:create
 ```

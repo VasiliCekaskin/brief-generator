@@ -6,6 +6,9 @@ import { fork } from "child_process";
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const form = new IncomingForm();
 
+  console.log(req);
+  console.log(form);
+
   form.parse(req, async (err, _, files) => {
     if (err) {
       console.log(err);
