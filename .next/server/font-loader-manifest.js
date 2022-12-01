@@ -1,0 +1,1 @@
+self.__FONT_LOADER_MANIFEST={pages:{},app:{'/Users/vasilicekaskin/priv/ezwebs/brief-generator/node_modules/@next/font/google/target.css?{"path":"app/layout.tsx","import":"Inter","arguments":[{"variable":"--font-inter"}],"variableName":"inter"}':[]}};
