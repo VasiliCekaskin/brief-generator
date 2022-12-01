@@ -1,11 +1,23 @@
-version: "3.9"
+version: "3"
 services:
-  frontend:
-    build: ./frontend
-    image: "brief-generator-frontend:latest"
-    ports:
-      - "80:80"
-  backend:
-    build: ./backend
-    image: "brief-generator-backend:latest"
+  postgres:
+    image: "postgres:latest"
     restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=brief-generator
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  brief-generator:
+    build: ./
+    image: "brief-generator:latest"
+    restart: always
+    ports:
+      - "80:3000"
+    environment:
+      - NEXTAUTH_URL=http://localhost.brief-generator.net
+      - NEXTAUTH_SECRET=verysecretsecret
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/brief-generator
+    depends_on:
+      - postgres
