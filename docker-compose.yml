@@ -1,14 +1,5 @@
 version: "3"
 services:
-  postgres:
-    image: "postgres:latest"
-    restart: always
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_DB=brief-generator
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
   brief-generator:
     build: ./
     image: "brief-generator:latest"
@@ -19,5 +10,3 @@ services:
       - NEXTAUTH_URL=http://localhost.brief-generator.net
       - NEXTAUTH_SECRET=verysecretsecret
       - DATABASE_URL=postgres://postgres:postgres@postgres:5432/brief-generator
-    depends_on:
-      - postgres

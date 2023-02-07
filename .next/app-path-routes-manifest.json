@@ -1,6 +1,6 @@
 {
   "/login/page": "/login",
-  "/page": "/",
   "/register/page": "/register",
-  "/protected/page": "/protected"
+  "/protected/page": "/protected",
+  "/page": "/"
 }

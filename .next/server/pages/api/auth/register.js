@@ -46,11 +46,12 @@ __webpack_require__.r(__webpack_exports__);
 
 async function handler(req, res) {
     const { email , password  } = req.body;
-    const exists = await _lib_prisma__WEBPACK_IMPORTED_MODULE_0__/* ["default"].user.findUnique */ .Z.user.findUnique({
-        where: {
-            email
-        }
-    });
+    const exists = false;
+    // await prisma.user.findUnique({
+    //   where: {
+    //     email,
+    //   },
+    // });
     if (exists) {
         res.status(400).send("User already exists");
     } else {

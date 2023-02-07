@@ -7,11 +7,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { email, password } = req.body;
-  const exists = await prisma.user.findUnique({
-    where: {
-      email,
-    },
-  });
+  const exists = false;
+  // await prisma.user.findUnique({
+  //   where: {
+  //     email,
+  //   },
+  // });
   if (exists) {
     res.status(400).send("User already exists");
   } else {
